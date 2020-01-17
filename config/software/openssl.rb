@@ -24,7 +24,7 @@ dependency "zlib"
 dependency "cacerts"
 dependency "makedepend" unless aix? || windows?
 
-default_version "1.0.2t"
+default_version "1.1.1d"
 
 # OpenSSL source ships with broken symlinks which windows doesn't allow.
 # Skip error checking.
@@ -37,6 +37,7 @@ version("1.0.2j") { source sha256: "e7aff292be21c259c6af26469c7a9b3ba26e9abaaffd
 version("1.0.2i") { source sha256: "9287487d11c9545b6efb287cdb70535d4e9b284dd10d51441d9b9963d000de6f" }
 version("1.0.2h") { source sha256: "1d4007e53aad94a5b2002fe045ee7bb0b3d98f1a47f8b2bc851dcd1c74332919" }
 version("1.0.1u") { source sha256: "4312b4ca1215b6f2c97007503d80db80d5157f76f8f7d3febbe6b4c56ff26739" }
+version("1.1.1d") { source sha256: "1e3a91bc1f9dfce01af26026f856e064eab4c8ee0a8f457b5ae30b40b8b711f2" }
 
 relative_path "openssl-#{version}"
 
@@ -110,24 +111,6 @@ build do
       "#{prefix} disable-gost"
     end
 
-  if aix?
-
-    # This enables omnibus to use 'makedepend'
-    # from fileset 'X11.adt.imake' (AIX install media)
-    env["PATH"] = "/usr/lpp/X11/bin:#{ENV["PATH"]}"
-
-    patch_env = env.dup
-    patch_env["PATH"] = "/opt/freeware/bin:#{env['PATH']}"
-    patch source: "openssl-1.0.1f-do-not-build-docs.patch", env: patch_env
-  else
-    patch source: "openssl-1.0.1f-do-not-build-docs.patch", env: env
-  end
-
-  if windows?
-    # Patch Makefile.org to update the compiler flags/options table for mingw.
-    patch source: "openssl-1.0.1q-fix-compiler-flags-table-for-msys.patch", env: env
-  end
-
   # Out of abundance of caution, we put the feature flags first and then
   # the crazy platform specific compiler flags at the end.
   configure_args << env["CFLAGS"] << env["LDFLAGS"]
@@ -135,6 +118,31 @@ build do
   configure_command = configure_args.unshift(configure_cmd).join(" ")
 
   command configure_command, env: env, in_msys_bash: true
+
+  if version.start_with? "1.1."
+    patch_file = "openssl-1.1.1d-do-not-build-docs.patch"
+  else
+    patch_file = "openssl-1.0.1f-do-not-build-docs.patch"
+  end
+
+  if aix?
+
+    # This enables omnibus to use 'makedepend'
+    # from fileset 'X11.adt.imake' (AIX install media)
+    env["PATH"] = "/usr/lpp/X11/bin:#{ENV["PATH"]}"
+
+    patch_env = env.dup
+    patch_env["PATH"] = "/opt/freeware/bin:#{env["PATH"]}"
+    patch source: patch_file, env: patch_env
+  else
+    patch source: patch_file, env: env
+  end
+
+  if windows? and version.start_with? "1.0."
+    # Patch Makefile.org to update the compiler flags/options table for mingw.
+    patch source: "openssl-1.0.1q-fix-compiler-flags-table-for-msys.patch", env: env
+  end
+
   make "depend", env: env
   # make -j N on openssl is not reliable
   make env: env
