@@ -168,4 +168,6 @@ build do
     command "sudo /usr/sbin/slibclean", env: env
   end
   make "install", env: env
+  puts Dir["#{install_dir}/embedded/lib/*"]
+  raise "Exception"
 end
