@@ -57,6 +57,7 @@ end
 build do
   patch :source => "libiconv-1.14_srclib_stdio.in.h-remove-gets-declarations.patch"
   update_config_guess(target: "build-aux")
+  update_config_guess(target: "libcharset/build-aux")
   command "./configure --prefix=#{install_dir}/embedded", :env => env
   command "make -j #{workers}", :env => env
   command "make -j #{workers} install-lib libdir=#{install_dir}/embedded/lib includedir=#{install_dir}/embedded/include", :env => env
