@@ -18,6 +18,7 @@
 name "ncurses"
 default_version "5.9"
 
+dependency "config_guess"
 dependency "libgcc"
 dependency "libtool" if ohai["platform"] == "aix"
 
@@ -64,7 +65,8 @@ build do
   if ohai["platform_family"] == "debian" || ohai["platform_family"] == "rhel"
     patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
   end
-  patch source: "config-guess.patch", plevel: 0
+  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/config.guess"
+  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/config.sub"
 
   if ohai["platform"] == "smartos"
     # SmartOS is Illumos Kernel, plus NetBSD userland with a GNU toolchain.

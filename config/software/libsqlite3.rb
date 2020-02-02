@@ -1,5 +1,7 @@
 name "libsqlite3"
-default_version "3.31.1"
+default_version "3.7.7.1"
+
+dependency "config_guess"
 
 source :git => "git://github.com/LuaDist/libsqlite3.git"
 
@@ -12,6 +14,8 @@ env = {
 }
 
 build do
+  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/config.guess"
+  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/config.sub"
   command(["./configure",
        "--prefix=#{install_dir}/embedded",
        "--disable-nls"].join(" "),

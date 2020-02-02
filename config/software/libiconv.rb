@@ -16,8 +16,9 @@
 #
 
 name "libiconv"
-default_version "1.16"
+default_version "1.14"
 
+dependency "config_guess"
 dependency "libgcc"
 
 source :url => "http://ftp.gnu.org/pub/gnu/libiconv/libiconv-#{version}.tar.gz",
@@ -54,7 +55,9 @@ if ohai["platform"] == "solaris2"
 end
 
 build do
-  #patch :source => "libiconv-1.14_srclib_stdio.in.h-remove-gets-declarations.patch"
+  patch :source => "libiconv-1.14_srclib_stdio.in.h-remove-gets-declarations.patch"
+  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/config.guess"
+  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/config.sub"
   command "./configure --prefix=#{install_dir}/embedded", :env => env
   command "make -j #{workers}", :env => env
   command "make -j #{workers} install-lib libdir=#{install_dir}/embedded/lib includedir=#{install_dir}/embedded/include", :env => env
