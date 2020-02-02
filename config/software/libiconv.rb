@@ -22,7 +22,7 @@ dependency "config_guess"
 dependency "libgcc"
 
 source :url => "http://ftp.gnu.org/pub/gnu/libiconv/libiconv-#{version}.tar.gz",
-       :md5 => "7d2a800b952942bb2880efb00cfd524c",
+       :md5 => "e34509b1623cec449dfeb73d7ce9c6c6",
        :extract => :seven_zip
 
 relative_path "libiconv-#{version}"
