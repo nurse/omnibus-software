@@ -31,6 +31,6 @@ relative_path "config_guess-#{version}"
 build do
   mkdir "/tmp/build/embedded/lib/config_guess"
 
-  copy "#{project_dir}/config.guess", "/tmp/build/embedded/lib/config_guess/build-aux/config.guess"
-  copy "#{project_dir}/config.sub", "/tmp/build/embedded/lib/config_guess/build-aux/config.sub"
+  copy "#{project_dir}/config.guess", "/tmp/build/embedded/lib/config_guess/config.guess"
+  copy "#{project_dir}/config.sub", "/tmp/build/embedded/lib/config_guess/config.sub"
 end
