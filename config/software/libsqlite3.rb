@@ -1,5 +1,5 @@
 name "libsqlite3"
-default_version "3.7.7.1"
+default_version "3.31.1"
 
 source :git => "git://github.com/LuaDist/libsqlite3.git"
 
