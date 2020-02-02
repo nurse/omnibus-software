@@ -56,10 +56,7 @@ end
 
 build do
   patch :source => "libiconv-1.14_srclib_stdio.in.h-remove-gets-declarations.patch"
-  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/build-aux/config.guess"
-  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/build-aux/config.sub"
-  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/libcharset/config.guess"
-  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/libcharset/config.sub"
+  update_config_guess("build-aux")
   command "./configure --prefix=#{install_dir}/embedded", :env => env
   command "make -j #{workers}", :env => env
   command "make -j #{workers} install-lib libdir=#{install_dir}/embedded/lib includedir=#{install_dir}/embedded/include", :env => env

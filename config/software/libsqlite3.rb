@@ -14,8 +14,7 @@ env = {
 }
 
 build do
-  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/config.guess"
-  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/config.sub"
+  update_config_guess
   command(["./configure",
        "--prefix=#{install_dir}/embedded",
        "--disable-nls"].join(" "),

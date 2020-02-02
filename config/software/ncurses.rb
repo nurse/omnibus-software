@@ -65,8 +65,7 @@ build do
   if ohai["platform_family"] == "debian" || ohai["platform_family"] == "rhel"
     patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
   end
-  copy "/tmp/build/embedded/lib/config_guess/config.guess", "#{project_dir}/config.guess"
-  copy "/tmp/build/embedded/lib/config_guess/config.sub", "#{project_dir}/config.sub"
+  update_config_guess
 
   if ohai["platform"] == "smartos"
     # SmartOS is Illumos Kernel, plus NetBSD userland with a GNU toolchain.
