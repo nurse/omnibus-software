@@ -64,6 +64,7 @@ build do
   if ohai["platform_family"] == "debian" || ohai["platform_family"] == "rhel"
     patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
   end
+  patch source: "config-guess.patch", plevel: 0
 
   if ohai["platform"] == "smartos"
     # SmartOS is Illumos Kernel, plus NetBSD userland with a GNU toolchain.
